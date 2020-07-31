@@ -1,0 +1,20 @@
+{
+  "name":"YouTube Helper",
+  "short_name": "YouTube Helper",
+  "description":"YouTube Helper is an extension that allows you to repeat skip etc when specific buttons are pressed.",
+  "manifest_version": 2,
+  "version":"0.5.0",
+  "author":"codezart",
+  "homepage_url": "https://github.com/squgeim/yt-ad-autoskipper",
+  "content_scripts":[
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js":["skipad.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "icons": {
+    "128": "logo.png"
+  }
+}
