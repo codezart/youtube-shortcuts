@@ -5,16 +5,17 @@
   "manifest_version": 2,
   "version":"0.5.0",
   "author":"codezart",
-  "homepage_url": "https://github.com/squgeim/yt-ad-autoskipper",
+  "homepage_url": "https://github.com/codezart/youtube-helper",
   "content_scripts":[
     {
-      "matches": ["*://*.youtube.com/*"],
-      "js":["skipad.js"],
+      "matches": ["<all_urls>"],
+      "js":["witness.js"],
       "run_at": "document_end",
       "all_frames": true
     }
   ],
   "icons": {
-    "128": "logo.png"
-  }
+    "128": "icon.svg"
+  },
+  "web_accessible_resources": ["style.css"]
 }
