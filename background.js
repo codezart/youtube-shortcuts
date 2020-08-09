@@ -1,9 +1,7 @@
-
 let loopCurrentVideo = false;
 
-
 function enableListeners(){
-    
+    console.log(loopCurrentVideo)
     // checks for keyboard commands for the extension
     chrome.commands.onCommand.addListener(function(command){
         // Ctrl+Shift+S command injects pause/unpause function using DOM
@@ -26,10 +24,32 @@ function enableListeners(){
                 }
             );
         }
-        // Ctrl+Shift+E command injects loopVideo function using DOM
+        // Ctrl+Shift+L command injects loopVideo function using DOM
         else if(command === "Ctrl+Shift+L"){
-            chrome.tabs.executeScript({ code: `(${ loopVideo }())`});
+
+            if(loopCurrentVideo){
+
+                loopCurrentVideo = false;
+                chrome.tabs.executeScript({ code: `(${ unLoopVideo }())`});
+
+                chrome.tabs.query({active: true, currentWindow: true},function(tabs){
+                    chrome.tabs.sendMessage(tabs[0].id,{action:"unloop video"}, function(response){
+
+                    })
+                });
+
+            }else{ 
+                loopCurrentVideo = true;
+                chrome.tabs.executeScript({ code: `(${ loopVideo }())`});
+
+                chrome.tabs.query({active: true, currentWindow: true},function(tabs){
+                    chrome.tabs.sendMessage(tabs[0].id,{action:"loop video"}, function(response){
+                        
+                    })
+                });
+            }            
         } 
+        
     });
 
 
@@ -47,6 +67,7 @@ function clickNextVideo(){
 
 // goes to previous page/video on youtube
 function previousPage(){
+    
     console.log("previous page");
     window.history.back();
 }
@@ -57,21 +78,13 @@ function pauseUnPauseVideo(){
     pauseUnPauseVideo.click();
 }
 
-// loops the video
-function loopVideo(){    
-    if(loopCurrentVideo){
-        loopCurrentVideo = false;
-    }else{
-        loopCurrentVideo = true;
-    }
-    console.log(loopCurrentVideo);
-
-
-    if(loopCurrentVideo){
-        let ytplayer = document.getElementsById("movie_player");
-        let currentTime = ytplayer.getCurrentTime();
-    }
+// loops current video on youtube
+function loopVideo(loopCurrentVideo){
+    document.getElementsByClassName('video-stream html5-main-video')[0].loop = true; 
 }
-
+// unloops current video on youtube
+function unLoopVideo(loopCurrentVideo){
+    document.getElementsByClassName('video-stream html5-main-video')[0].loop = false; 
+}
 
 enableListeners();
