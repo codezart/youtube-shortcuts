@@ -1,8 +1,7 @@
-let downloadYoutubeVideo = document.getElementById("downloadVideo");
+// Gets the download button on popup.html
+let downloadYoutubeVideo = document.getElementById("download");
 
 downloadYoutubeVideo.onclick = function(element){
-    console.log("clicked download video");
-    document.createElement("a");
     chrome.tabs.query({active: true, lastFocusedWindow:true}, tabs =>{
         chrome.tabs.executeScript(
             tabs[0].id, { code: `(${ downloadVideo }())` }
@@ -27,7 +26,7 @@ function downloadVideo(){
         link.click();
         console.log(link);*/
 
-
+        // Gets the current tab's urll and adds 'ss' between www. and youtube.com - to navigate to the download site.
         let url = window.location.href;
         let urlFirstPart = url.slice(0,12);
         let urlSecondPart = url.slice(12);
@@ -37,4 +36,3 @@ function downloadVideo(){
         link.click();
  
 }
-function downloadAudio(){}
