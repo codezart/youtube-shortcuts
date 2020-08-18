@@ -1,13 +1,5 @@
 function enableListeners(){
-    // setting looping video function when extension is live.
-    chrome.runtime.onInstalled.addListener(function(){
-        chrome.storage.sync.set({loopCurrentVideo: false}, function(){
-            console.log("Inside - chrome.runtime.onInstalled. loopvideo set to false.")
-        });
-
-        
-    });
-
+    
     // Listens for keyboard commands.
     chrome.commands.onCommand.addListener(function(command){
 
@@ -18,30 +10,29 @@ function enableListeners(){
                    code: `(${ pauseUnPauseVideo }())`
                 }
             );
-        }
 
-
-        // Ctrl+Shift+Q command injects previousPage function using DOM
+        }// Ctrl+Shift+Q command injects previousPage function using DOM
         else if( command === "Ctrl+Shift+Q"){
-            chrome.tabs.executeScript({ code: `( ${ previousPage }())`});
-        }
+           
+            chrome.tabs.executeScript(
+                { 
+                    code: `( ${ previousPage }())`
+                }
+            );
 
-
-        // Ctrl+Shift+E command injects clickNextVideo function using DOM
+        }// Ctrl+Shift+E command injects clickNextVideo function using DOM
         else if(command === "Ctrl+Shift+E"){
+            
             chrome.tabs.executeScript(
                 {
                     code: `(${ clickNextVideo}())`
                 }
             );
-        }
 
-
-
-        // Ctrl+Shift+L command injects loopVideo function using DOM
+        }// Ctrl+Shift+L command injects loopVideo function using DOM
         else if(command === "Ctrl+Shift+L"){
             
-            // get the tab id
+            // purpose of .query is to get the tab id
             chrome.tabs.query({active: true, lastFocusedWindow:true}, tabs =>{
                 
                 // returns the loop property of video (true/false)

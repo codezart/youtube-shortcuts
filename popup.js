@@ -1,4 +1,4 @@
-// Gets the download button on popup.html
+// Download button on popup.html
 let downloadYoutubeVideo = document.getElementById("download");
 
 downloadYoutubeVideo.onclick = function(element){
@@ -28,7 +28,7 @@ function downloadVideo(){
             console.log(link);
         */
 
-        // Gets the current tab's urll and adds 'ss' between www. and youtube.com - to navigate to the download site.
+        // Gets the current tab's url and adds 'ss' between www. and youtube.com - navigates to saveform.net
         let url = window.location.href;
         let urlFirstPart = url.slice(0,12);
         let urlSecondPart = url.slice(12);
