@@ -1,7 +1,13 @@
-let loopCurrentVideo = false;
-
 function enableListeners(){
-    console.log(loopCurrentVideo)
+
+    chrome.runtime.onInstalled.addListener(function(){
+        chrome.storage.sync.set({loopCurrentVideo: false}, function(){
+            console.log("Inside - chrome.runtime.onInstalled. loopvideo set to false.")
+        });
+    });
+
+
+
     // checks for keyboard commands for the extension
     chrome.commands.onCommand.addListener(function(command){
         // Ctrl+Shift+S command injects pause/unpause function using DOM
@@ -26,28 +32,32 @@ function enableListeners(){
         }
         // Ctrl+Shift+L command injects loopVideo function using DOM
         else if(command === "Ctrl+Shift+L"){
+            
+            
+            chrome.storage.sync.get('loopCurrentVideo',function(data){
+                if(data.loopCurrentVideo){
 
-            if(loopCurrentVideo){
-
-                loopCurrentVideo = false;
-                chrome.tabs.executeScript({ code: `(${ unLoopVideo }())`});
-
-                chrome.tabs.query({active: true, currentWindow: true},function(tabs){
-                    chrome.tabs.sendMessage(tabs[0].id,{action:"unloop video"}, function(response){
-
-                    })
-                });
-
-            }else{ 
-                loopCurrentVideo = true;
-                chrome.tabs.executeScript({ code: `(${ loopVideo }())`});
-
-                chrome.tabs.query({active: true, currentWindow: true},function(tabs){
-                    chrome.tabs.sendMessage(tabs[0].id,{action:"loop video"}, function(response){
-                        
-                    })
-                });
-            }            
+                    chrome.storage.sync.set({loopCurrentVideo: false});
+                    chrome.tabs.executeScript({ code: `(${ unLoopVideo }())`});
+    
+                    chrome.tabs.query({active: true, currentWindow: true},function(tabs){
+                        chrome.tabs.sendMessage(tabs[0].id,{action:"unloop video"}, function(response){
+    
+                        });
+                    });
+    
+                }else{ 
+                    chrome.storage.sync.set({loopCurrentVideo: true});                    
+                    chrome.tabs.executeScript({ code: `(${ loopVideo }())`});
+    
+                    chrome.tabs.query({active: true, currentWindow: true},function(tabs){
+                        chrome.tabs.sendMessage(tabs[0].id,{action:"loop video"}, function(response){
+                            
+                        })
+                    });
+                }  
+            });
+                      
         } 
         
     });
@@ -79,12 +89,14 @@ function pauseUnPauseVideo(){
 }
 
 // loops current video on youtube
-function loopVideo(loopCurrentVideo){
-    document.getElementsByClassName('video-stream html5-main-video')[0].loop = true; 
+function loopVideo(){
+    let loopVideo = document.getElementsByClassName('video-stream html5-main-video')[0].loop; 
+    loopVideo = true;
 }
 // unloops current video on youtube
-function unLoopVideo(loopCurrentVideo){
-    document.getElementsByClassName('video-stream html5-main-video')[0].loop = false; 
+function unLoopVideo(){
+    let loopVideo = document.getElementsByClassName('video-stream html5-main-video')[0].loop; 
+    loopVideo = false;
 }
 
 enableListeners();

@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="witness.js" async></script>
+        <script src="popup.js"></script>
     </head>
     <body>
-        <section>
-            <p>Welcome to youtube helper testing //["*://*.youtube.com/*"],</p>
-            <p>Next Video: Ctrl+Shift+E</p>
-            <p>Previous Video: Ctrl+Shift+Q</p>
-            <p>Pause Video: Ctrl+Shift+S</p>
-            <p>Loop Video: Ctrl+Shift+L</p>
-            <p>Next Video: Ctrl+Shift+E</p>
+        <section style="width:200px;">
+            <p>Welcome to youtube helper</p>
+            <p><strong>Next Video: Ctrl+Shift+E</strong></p>
+            <p><strong>Previous Video: Ctrl+Shift+Q</strong></p>
+            <p><strong>Pause Video: Ctrl+Shift+S</strong></p>
+            <p><strong>Loop Video: Ctrl+Shift+L</strong></p>
+            <div class="buttons">
+                <p>Click to download</p>
+            
+                <button id="downloadVideo" ><img src="https://img.icons8.com/nolan/64/video.png"/></button>
+                <a id="video_download_link" href="" style="display:none;" download=""></a>
+                <button id="downloadAudio"><img src="https://img.icons8.com/nolan/64/mp3.png"/></button>
+            </div>
         </section>
     </body>
 </html>
