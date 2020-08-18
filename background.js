@@ -8,12 +8,8 @@ function enableListeners(){
         
     });
 
-
-
     // Listens for keyboard commands.
     chrome.commands.onCommand.addListener(function(command){
-
-
 
         // Ctrl+Shift+S command injects pause/unpause function using DOM
         if( command === "Ctrl+Shift+S"){
@@ -25,12 +21,10 @@ function enableListeners(){
         }
 
 
-
         // Ctrl+Shift+Q command injects previousPage function using DOM
         else if( command === "Ctrl+Shift+Q"){
             chrome.tabs.executeScript({ code: `( ${ previousPage }())`});
         }
-
 
 
         // Ctrl+Shift+E command injects clickNextVideo function using DOM
@@ -47,17 +41,21 @@ function enableListeners(){
         // Ctrl+Shift+L command injects loopVideo function using DOM
         else if(command === "Ctrl+Shift+L"){
             
+            // get the tab id
             chrome.tabs.query({active: true, lastFocusedWindow:true}, tabs =>{
+                
+                // returns the loop property of video (true/false)
                 chrome.tabs.executeScript(
                     tabs[0].id, {code: `document.getElementsByClassName('video-stream html5-main-video')[0].loop` },function(data){
-                       
- 
-                       console.log("loop: "+data[0]);
+                    
+                        // If loop true unloop it vice versa
+                        console.log("loop: "+data[0]);
                         if(data[0]){
 
-                    
+                            // execute script/function to turn loop property to false.
                             chrome.tabs.executeScript({ code: `(${ unLoopVideo }())`});
-            
+                            
+                            // Send reponse saying video is now unlooped
                             chrome.tabs.query({active: true, currentWindow: true},function(tabs){
                                 chrome.tabs.sendMessage(tabs[0].id,{action:"unloop video"},function(response){
                                     console.log(response);
@@ -65,8 +63,11 @@ function enableListeners(){
                             });
             
                         }else{ 
+
+                            // execute script/function to turn loop property to true.
                             chrome.tabs.executeScript({ code: `(${ loopVideo }())`});
-            
+                            
+                            // Send reponse saying video is now looped
                             chrome.tabs.query({active: true, currentWindow: true},function(tabs){
                                 chrome.tabs.sendMessage(tabs[0].id,{action:"loop video"},function(response){
                                     console.log(response);
@@ -87,6 +88,7 @@ function enableListeners(){
 
 // loads next video on youtube
 function clickNextVideo(){
+    
     console.log("Next video");
     let nextVideo = document.getElementsByClassName("ytp-next-button ytp-button")[0];
     nextVideo.click();
@@ -101,6 +103,7 @@ function previousPage(){
 
 // pauses the current video playing on youtube
 function pauseUnPauseVideo(){
+    
     let pauseUnPauseVideo = document.getElementsByClassName("ytp-play-button ytp-button")[0];
     pauseUnPauseVideo.click();
 }
@@ -113,9 +116,9 @@ function loopVideo(){
 }
 // unloops current video on youtube
 function unLoopVideo(){
+    
     document.getElementsByClassName('video-stream html5-main-video')[0].loop = false; 
     console.log("inside UNloopvideo function now loop:"+ document.getElementsByClassName('video-stream html5-main-video')[0].loop)
-
 }
 
 enableListeners();
