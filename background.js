@@ -4,6 +4,19 @@ function enableListeners(){
         chrome.storage.sync.set({loopCurrentVideo: false}, function(){
             console.log("Inside - chrome.runtime.onInstalled. loopvideo set to false.")
         });
+
+        // DELETE...
+        chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+            chrome.declarativeContent.onPageChanged.addRules([{
+              conditions: [new chrome.declarativeContent.PageStateMatcher({
+                pageUrl: {hostEquals: 'youtube.com'},
+              })
+              ],
+                  actions: [new chrome.declarativeContent.ShowPageAction()]
+            }]);
+          });
+        // DELETE...
+        
     });
 
 
